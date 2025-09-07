@@ -1,41 +1,23 @@
-# Website
+# Como usar 
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
-
-## Installation
+Ao clonar o projeto, rode:
 
 ```bash
-yarn
+npm install
 ```
 
-## Local Development
+e após o comando:
 
 ```bash
-yarn start
+npm start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Isso iniciariá a aplicação localmente e você poderá acessar no localhost informado.
 
-## Build
+# Como contribuir
 
-```bash
-yarn build
-```
+Você pode criar uma nova branch do projeto, e por meio dessa criar uma PR com o que deseja que seja alterado/adicionado.
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+### Exemplo
 
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Criar uma branch: Fix-designIntro, editar o que deseja e enviar a PR para a branch main do projeto.

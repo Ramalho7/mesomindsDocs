@@ -100,8 +100,8 @@ const config = {
             label: 'Documentação',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
-          {
-            href: 'https://github.com/facebook/docusaurus',
+            {
+              href: 'https://github.com/Ramalho7/mesomindsDocs',
             label: 'GitHub',
             position: 'right',
           },
@@ -135,9 +135,9 @@ const config = {
                 label: 'Blog',
                 to: '/blog',
               },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                {
+                  label: 'GitHub',
+                  href: 'https://github.com/Ramalho7/mesomindsDocs',
               },
             ],
           },
