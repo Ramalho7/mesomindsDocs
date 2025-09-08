@@ -11,15 +11,28 @@ Seção dedicada a apresentação área de design do projeto.
 
 A prototipação ocorrerá pelo figma: [Figma do projeto](https://www.figma.com/team_invite/redeem/osOk4my6ME4H5P0ujJF0Wf)
 
+---
+
+# Referências para criação das páginas
+
+- [Prisma](https://estudeprisma.com/);
+- [OUL Educação](https://educacao.uol.com.br/);
+- [Khan acadamy](https://pt.khanacademy.org/);
+- [brilliant](https://brilliant.org/);
+
+---
+
 # Requisitos
+
 1. Atender a responsividade do maior número possível de dispositivos.
 2. Usar componentes no figma para facilitar a reutilização
 3. Padronização de componentes
 4. Uso de auto layout Figma para auxiliar na responsividade
 5. Uso de Constraints para auxiliar na responsividade
-6. Usar o principio atomic design para criação de componentes, layouts, templates e pages 
+6. Usar o principio atomic design para criação de componentes, layouts, templates e pages
 
 ## Componentes
+
 - Botões Gerais
 - Botões de ação
 - Footer
@@ -47,5 +60,3 @@ A prototipação ocorrerá pelo figma: [Figma do projeto](https://www.figma.com/
 - [Turma simulados](./pages/turma.md)
 - [Login](./pages/login.md)
 - [Register](./pages/register.md)
-
-

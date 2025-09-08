@@ -36,3 +36,6 @@ Pré-requisitos para conseguir rodar o projeto:
 5. [Área do professor](./areas/areadoProfessor)
 6. [Conteúdos](./areas/conteudos.md)
 7. [ADMIN](./areas/admin.md)
+
+## Sistema freemium
+O sistema deverá contar, em algum momento com o sistema freemium para disponibilizarmos conteúdos/simulados/provas/etc pagos e grátis.
