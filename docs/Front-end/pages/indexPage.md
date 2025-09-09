@@ -11,7 +11,7 @@ A página de index contém as áreas(não está em ordem):
 
 1. Hero Section
 2. Quem somos?
-3. Como o projeto surgiu? (idealização)
-4. Como você se beneficia com ao usar o MesoMinds?
-5. Comece com o MesoMinds
+2. Como você se beneficia com ao usar o MesoMinds?
+3. Comece com o MesoMinds
+
 

@@ -60,3 +60,4 @@ A prototipação ocorrerá pelo figma: [Figma do projeto](https://www.figma.com/
 - [Turma simulados](./pages/turma.md)
 - [Login](./pages/login.md)
 - [Register](./pages/register.md)
+- [Tela do usuário](./pages/telaUsuario.md)

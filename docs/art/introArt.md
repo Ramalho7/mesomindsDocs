@@ -18,4 +18,4 @@ Documento com os dados referente as entregas devidas.: [Edital WayHub](https://d
 ## Resumo
 
 Como, no momento, estamos no nível dois do WayHub, agora temos que realizar contribuições científicas para podermos subir de nível, isso significa, realizarmos artigos, fazermos publicações, etc.
-Tudo isso soma pontos para podermos avançar ao nível 3 de maturidade.
+Tudo isso soma pontos para podermos avançar ao nível 3 de maturidade.:
