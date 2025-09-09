@@ -19,8 +19,14 @@ A prototipação ocorrerá pelo figma: [Figma do projeto](https://www.figma.com/
 - [OUL Educação](https://educacao.uol.com.br/);
 - [Khan acadamy](https://pt.khanacademy.org/);
 - [brilliant](https://brilliant.org/);
+- [Mimo](https://mimo.org/);
 
 ---
+
+## Cores gerais do sistema: 
+
+- Roxo
+- Verde 
 
 # Requisitos
 

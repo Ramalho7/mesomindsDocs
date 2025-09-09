@@ -4,7 +4,9 @@ A ideia principal das turmas é funcionar como comunidades para os alunos e prof
 
 Para exemplo, podesse usar o classroom, que possui função parecida.
 
-## Principais funcionalidades das turmas/comunidades
+## Principais funcionalidades das turmas/comunidades(requisitos funcionais)
+
+### Funções por perfil
 
 1. Perfis por usuário
    - **Admin (Professor)**
@@ -19,9 +21,13 @@ Para exemplo, podesse usar o classroom, que possui função parecida.
      1. Poderá consumir conteúdos da comunidade
      2. Realizar provas, atividades e simulados
 
-## Funções
+## Funções gerais
 
 1. Adicionar, remover, editar e visualizar: conteúdos/atividades/simulados/questões/notas a alunos dentro de uma turma
+2. Acompanhamento de notas(aluno, professor)
+3. Correção de atividades/provas/simulados
+4. Agendamento de publicação de conteúdo na turma pelo professor
+5. Notificar ao aluno sobre novos conteúdos adicionados a turma
 
 ## Historias de usuário
 
