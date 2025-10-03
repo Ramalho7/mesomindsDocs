@@ -27,14 +27,13 @@ $user = \App\Models\SystemUser::find(11);
 ```bash
 php artisan passport:client --personal
 ```
+- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o token JWT fornecido pelo passport.
 
 - Você se depará com uma tela de dialogo parecida com essa: 
 
 ![alt text](./images/personalTokenPassportLaravel.png)
 
 - Responda como está na imagem, mas sinta-se livre para usar o nome de client que preferir, apenas a próxima pergunta deve ser respondida da mesma forma.
-
-- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o token JWT fornecido pelo passport.
 
 ```bash
 $token = $user->createToken('postman-test');
@@ -52,7 +51,7 @@ echo "Bearer " . $token->accessToken;
 ### No postman
 
 - Dentro do postman, você irá em `Headers` adicionará: as keys `Authorization` e `Accept` 
-  - `Authorization`: adicione o seu JWT fornecido no eco
-  - `Accept`: adicione o texto: application/json
+  - `Authorization`: adicione o seu JWT fornecido no echo ao `value` no header
+  - `Accept`: adicione o texto: application/json ao `value` no header
 
 - Agora você poderá testar endpoints que precisam de autenticação.
