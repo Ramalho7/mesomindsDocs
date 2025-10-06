@@ -56,7 +56,8 @@ docker compose exec laravel.test composer install --no-interaction --prefer-dist
 - Para gerar a chave da aplicação Laravel:
 
 ```bash
-./vendor/bin/sail artisan key:generate```
+./vendor/bin/sail artisan key:generate
+```
 
 - Em seguida, gere as chaves do Laravel Passport para autenticação:
 
