@@ -77,6 +77,81 @@ Com esses passos já deve ser possível usar o projeto sem precisar possuir o ph
 
 ---
 
+## 6. Corrigir permissões de arquivos e pastas
+
+Após a instalação das dependências e geração das chaves, é importante ajustar as permissões dos arquivos para garantir o funcionamento correto da aplicação.
+
+### 6.1. Ajustar permissões de storage e cache
+
+Dentro do container, execute os seguintes comandos para corrigir as permissões das pastas de armazenamento e cache:
+
+```bash
+./vendor/bin/sail exec laravel.test bash
+chown -R sail:sail storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+```
+
+### 6.2. Corrigir permissões das chaves OAuth (Laravel Passport)
+
+As chaves do Laravel Passport requerem permissões específicas por questões de segurança. Execute os comandos abaixo:
+
+```bash
+chmod 660 storage/oauth-public.key
+chmod 660 storage/oauth-private.key
+chown sail:sail storage/oauth-public.key
+chown sail:sail storage/oauth-private.key
+```
+
+**Importante:** As chaves OAuth devem ter permissões `660` ou `600` para evitar problemas de segurança e alertas do Laravel.
+
+### 6.3. Sair do container
+
+Após ajustar as permissões, saia do container:
+
+```bash
+exit
+```
+
+### 6.4. Reiniciar os containers
+
+Para garantir que todas as alterações sejam aplicadas corretamente, reinicie os containers:
+
+```bash
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+### 6.5. Verificar se a aplicação está funcionando
+
+Teste se a aplicação está acessível:
+
+```bash
+curl http://127.0.0.1:8000
+```
+
+Ou acesse diretamente no navegador: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+Para testar as rotas da API, utilize:
+
+```bash
+curl http://127.0.0.1:8000/api/users
+```
+
+### Troubleshooting de permissões
+
+**Problema:** Mensagem de erro sobre permissões incorretas das chaves OAuth
+
+**Solução:** Certifique-se de que executou os comandos `chmod` e `chown` **dentro do container**, não no host. O usuário `sail` só existe dentro do ambiente Docker.
+
+**Problema:** Erro `ECONNRESET` ou `Connection reset by peer` ao acessar a aplicação
+
+**Solução:** Verifique se:
+1. As permissões de `storage` e `bootstrap/cache` estão corretas
+2. As chaves OAuth têm permissões `660`
+3. Os containers foram reiniciados após as alterações
+
+---
+
 ## Informações adicionais
 
 - A aplicação estará acessível em: http://127.0.0.1:8000
