@@ -24,10 +24,17 @@ $user = \App\Models\SystemUser::first();
 $user = \App\Models\SystemUser::find(11);
 ```
 
+- O comando abaixo pode ser usado para encontrar um certo tipo de usuário:
+
+```bash
+$user = \App\Models\SystemUser::where('tipo', 'Moderador')->first();
+```
+
+- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o token JWT fornecido pelo passport.
+
 ```bash
 php artisan passport:client --personal
 ```
-- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o token JWT fornecido pelo passport.
 
 - Você se depará com uma tela de dialogo parecida com essa: 
 
