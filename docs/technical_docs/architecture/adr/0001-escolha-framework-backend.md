@@ -1,8 +1,7 @@
 # ADR 0001 — Escolha do Framework Backend
 
-**Data:** 2025-09-01  
+**Data:** 01/09/2025  
 **Status:** Aprovado  
-**Decisão Tomada por:** Equipe de Desenvolvimento
 
 ---
 
@@ -69,4 +68,4 @@ Optamos por utilizar **Laravel** como framework backend principal.
 ---
 
 **Status atual:** **Aprovado e implementado.**
-**Última atualização:** 2025-09-01
+**Última atualização:** 01/09/2025
