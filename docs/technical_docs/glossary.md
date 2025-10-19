@@ -49,6 +49,7 @@ Este documento descreve os principais termos, conceitos e componentes utilizados
 | **Token JWT** | Chave usada para autenticação segura entre o front-end e o back-end. |
 | **Autenticação** | Processo de verificação da identidade de um usuário (ex: login com e-mail e senha). |
 | **Autorização** | Processo que define quais ações cada usuário pode executar no sistema. |
+| **Atividades** | Atividades são em suma, um conjunto de questões, que podem vir a ser uma prova, uma atividade em uma turma, um simulado, etc. |
 
 ---
 

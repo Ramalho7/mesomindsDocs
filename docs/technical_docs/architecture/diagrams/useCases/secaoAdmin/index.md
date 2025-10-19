@@ -19,4 +19,4 @@ Esta área é separada do site principal e acessível apenas para administradore
 
 ## Casos de uso
 
-- [Gerenciar Conteúdos](gerenciaConteudos.md)
+- [Gerenciar Conteúdos](admin-conteudo.md)
