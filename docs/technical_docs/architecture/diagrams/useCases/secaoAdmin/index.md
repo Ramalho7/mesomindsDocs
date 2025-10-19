@@ -19,4 +19,5 @@ Esta área é separada do site principal e acessível apenas para administradore
 
 ## Casos de uso
 
-- [Gerenciar Conteúdos](admin-conteudo.md)
+- [UML Geral ADMIN](./admin-general/admin-general.md)
+- [Gerenciar Conteúdos](./admin-conteudo/admin-conteudo.md)
