@@ -18,11 +18,11 @@ Seção dedicada a apresentação de diagramas de sequência relacionado a geren
 - Session Store
 
 ## Diagramas de sequência
-[Diagrama de criação de conteúdo]()
-[Diagrama de edição de conteúdo]()
-[Diagrama de remoção de conteúdo]()
-[Diagrama de visualização de conteúdo]()
-[Diagrama de atualização de status de conteúdo]()
+- [Diagrama de criação de conteúdo]()
+- [Diagrama de edição de conteúdo]()
+- [Diagrama de remoção de conteúdo]()
+- [Diagrama de visualização de conteúdo]()
+- [Diagrama de atualização de status de conteúdo]()
 
 ## UMLs relacionados
 
