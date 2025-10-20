@@ -30,7 +30,7 @@ $user = \App\Models\SystemUser::find(11);
 $user = \App\Models\SystemUser::where('tipo', 'Moderador')->first();
 ```
 
-- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o token JWT fornecido pelo passport.
+- Agora, fora do tinker, com o comando acima, iremos criar o nosso "Personal Acess Client" para `users` user provider, sem isso não conseguiremos resgatar o Acess Token fornecido pelo passport.
 
 ```bash
 php artisan passport:client --personal
@@ -58,7 +58,7 @@ echo "Bearer " . $token->accessToken;
 ### No postman
 
 - Dentro do postman, você irá em `Headers` adicionará: as keys `Authorization` e `Accept` 
-  - `Authorization`: adicione o seu JWT fornecido no echo ao `value` no header
+  - `Authorization`: adicione o seu Acess Token fornecido no echo ao `value` no header
   - `Accept`: adicione o texto: application/json ao `value` no header
 
 - Agora você poderá testar endpoints que precisam de autenticação.

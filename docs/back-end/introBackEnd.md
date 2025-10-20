@@ -23,7 +23,7 @@ Pré-requisitos para conseguir rodar o projeto:
 # Funcionalidades principais
 
 ## Sistema de auth
-1. [JWT para autenticação](./auth/jwtAuth.md)
+1. [OAuth2 para autenticação - Passport](./auth/OAuth2.md)
 2. [Cadastro de usuários](./auth/auth.md)
 3. [Login de usuários](./auth/login.md)
 4. [logout](./auth/login)

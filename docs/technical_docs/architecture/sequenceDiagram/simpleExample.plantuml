@@ -1,0 +1,14 @@
+@startuml
+actor Cliente
+participant API
+database BancoDeDados as DB
+
+Cliente -> API : GET /pedidos
+activate API
+API -> DB : SELECT * FROM pedidos WHERE usuario_id=1
+activate DB
+DB --> API : resultados
+deactivate DB
+API --> Cliente : 200 OK (lista de pedidos)
+deactivate API
+@enduml

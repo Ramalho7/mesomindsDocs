@@ -1,0 +1,36 @@
+@startuml
+actor "Usuário" as User
+participant "Web App(Frontend)" as Web
+participant "Auth API(Backend)" as Auth
+database "User DB" as DB
+participant "Session Store" as Session
+
+User -> Web: Abre página de login
+activate Web
+User -> Web: Envia credenciais (email, senha)
+
+Web -> Auth: POST /api/login {email, password}
+activate Auth
+
+Auth -> DB: Procura no DB credenciais
+activate DB
+DB --> Auth: user record + password_hash
+deactivate DB
+
+Auth -> Auth: verificar password_hash
+alt senha válida
+    Auth -> Session: criar sessão / token (JWT)
+    activate Session
+    Session --> Auth: token / session id
+    deactivate Session
+
+    Auth -> Web: 200 OK {token, user info}
+    Web -> User: Redirecionar para dashboard / salvar token (cookie/localStorage)
+else senha inválida
+    Auth -> Web: 401 Unauthorized {erro}
+    Web -> User: Mostrar mensagem de erro
+end
+
+deactivate Auth
+deactivate Web
+@enduml

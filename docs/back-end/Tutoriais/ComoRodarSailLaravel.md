@@ -1,3 +1,7 @@
+---
+title: Como rodar Sail - Laravel
+---
+
 # Subindo container Sail pela primeira vez
 
 Este guia explica como configurar e executar Laravel Sail corretamente para o projeto MesoMinds.

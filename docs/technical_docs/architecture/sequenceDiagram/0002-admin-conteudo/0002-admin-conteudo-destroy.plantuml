@@ -1,0 +1,41 @@
+@startuml
+
+actor "Usuário (Admin)" as Admin
+participant "Web App (Frontend)" as Web
+participant "Auth API (Backend)" as Auth
+database "User DB" as DB
+participant "Session Store" as Session
+
+Admin -> Web: Clica em botão "Deletar"
+activate Web
+Web -> Web: Mostrar confirmação ao usuário
+alt confirma
+    Web -> Session: Verifica sessão (token/cookie)
+    activate Session
+    Session --> Web: sessão válida + role=[admin]
+    deactivate Session
+
+    alt autorizado
+        Web -> Auth: DELETE /api/conteudo/{id} {token}
+        activate Auth
+        Auth -> DB: DELETE FROM conteudo WHERE id={id}
+        activate DB
+        DB --> Auth: Conteúdo deletado / not found
+        deactivate DB
+        alt deletado
+            Auth --> Web: 200 OK (confirm)
+            Web --> Admin: Confirmação (conteúdo deletado)
+        else não encontrado
+            Auth --> Web: 404 Not Found
+            Web --> Admin: Erro (conteúdo não encontrado)
+        end
+    else não autorizado
+        Auth --> Web: 401/403 Unauthorized
+        Web --> Admin: Redireciona para /login ou mostra erro de permissão
+    end
+else cancelou
+    Web --> Admin: Ação cancelada
+end
+deactivate Web
+
+@enduml
