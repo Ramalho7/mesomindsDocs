@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-skinparam actorStyle awesome
+skinparam actorStyle stick
 skinparam usecase {
   BackgroundColor #fefefe
   BorderColor #555
@@ -10,16 +10,13 @@ skinparam rectangle {
   FontStyle bold
 }
 
-' === Atores ===
 actor "Admin" as Admin
 actor "Moderador" as Mod
 actor "Operador" as Op
 
-' === Herança de Admin ===
 Mod --|> Admin
 Op --|> Admin
 
-' === Boundary único do sistema ===
 rectangle "Plataforma Mesominds" {
     usecase "Gerenciar Plataforma" as UC_Main
     usecase "Gerenciar conteúdos" as UC_Content
@@ -37,7 +34,6 @@ rectangle "Plataforma Mesominds" {
     UC_Main <.. UC_Classes : include
 }
 
-' === Conexões ===
 Admin --> UC_Main
 
 @enduml
