@@ -1,0 +1,285 @@
+@startuml ClassDiagram
+
+enum TypeSystemUser {
+  PROFESSOR
+  ALUNO
+  ADMIN
+  MODERADOR
+  OPERADOR
+}
+
+enum StatusSystemUser {
+  ATIVO
+  BLOQUEADO
+  INATIVO
+}
+
+enum StatusConteudo {
+  RASCUNHO
+  ATIVO
+  INATIVO
+}
+
+enum TipoQuestao {
+  MULTIPLA
+  VERDADEIRO_FALSO
+  ABERTA
+}
+
+enum StatusQuestao {
+  ATIVO
+  INATIVO
+}
+
+enum TipoAtividade {
+  PROVA
+  SIMULADO
+  ATIVIDADE
+}
+
+enum StatusAtividade {
+  ATIVO
+  INATIVO
+}
+
+enum StatusTurma {
+  ATIVO
+  INATIVO
+}
+
+class SystemUser {
+  - id: int
+  - name: string
+  - email: string
+  - password: string
+  - type: TypeSystemUser
+  - criador: int
+  - ultimo_editor: int
+  - status: StatusSystemUser
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getName(): string
+  + getEmail(): string
+  + getType(): TypeSystemUser
+  + getStatus(): StatusSystemUser
+}
+
+class Materia {
+  - id: int
+  --
+  + getId(): int
+}
+
+class Conteudo {
+  - id: int
+  - title: string
+  - content: longText
+  - id_materia: int
+  - criador: int
+  - ultimo_editor: int
+  - status: StatusConteudo
+  - created_at: datetime
+  - updated_at: datetime
+  - published_at: datetime
+  --
+  + getId(): int
+  + getTitle(): string
+  + getContent(): string
+  + getStatus(): StatusConteudo
+  + publish(): void
+}
+
+class ContentTag {
+  - id: int
+  - tag_name: string
+  - is_moderator_only: boolean
+  - count: integer
+  - description: string
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getTagName(): string
+  + getCount(): int
+}
+
+class ContentImage {
+  - id: int
+  - file_name: string
+  - file_path: string
+  - alt_text: string
+  - base64_data: string
+  - mime_type: string
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getFileName(): string
+  + getFilePath(): string
+}
+
+class ContentType {
+  - id: int
+  - title: string
+  - description: string
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getTitle(): string
+  + getDescription(): string
+}
+
+class Questao {
+  - id: int
+  - titulo: string
+  - corpo: string
+  - materia: int
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  - status: StatusQuestao
+  - tipo: TipoQuestao
+  --
+  + getId(): int
+  + getTitulo(): string
+  + getCorpo(): string
+  + getTipo(): TipoQuestao
+  + getStatus(): StatusQuestao
+  + getAlternativas(): List<Alternativa>
+}
+
+class Alternativa {
+  - id: int
+  - questao: int
+  - valor: string
+  - correta: boolean
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  - status: StatusQuestao
+  --
+  + getId(): int
+  + getValor(): string
+  + isCorreta(): boolean
+  + getStatus(): StatusQuestao
+}
+
+class Atividade {
+  - id: int
+  - nome: string
+  - materia: int
+  - tipo: TipoAtividade
+  - prazoFinal: datetime
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  - status: StatusAtividade
+  --
+  + getId(): int
+  + getNome(): string
+  + getTipo(): TipoAtividade
+  + getPrazoFinal(): datetime
+  + getQuestoes(): List<Questao>
+  + getTurmas(): List<Turma>
+  + isVencida(): boolean
+}
+
+class AtividadeQuestao {
+  - id: int
+  - id_atividade: int
+  - id_questao: int
+  - criador: int
+  - ultimo_editor: int
+  - status: StatusAtividade
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getIdAtividade(): int
+  + getIdQuestao(): int
+}
+
+class Turma {
+  - id: int
+  - nome: string
+  - limite: int
+  - status: StatusTurma
+  - responsavel: int
+  - criador: int
+  - ultimo_editor: int
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getNome(): string
+  + getLimite(): int
+  + getStatus(): StatusTurma
+  + getAlunos(): List<SystemUser>
+  + getAtividades(): List<Atividade>
+  + adicionarAluno(aluno: SystemUser): void
+}
+
+class TurmaAluno {
+  - id: int
+  - id_turma: int
+  - id_aluno: int
+  - criador: int
+  - ultimo_editor: int
+  - status: StatusAtividade
+  - created_at: datetime
+  - updated_at: datetime
+  --
+  + getId(): int
+  + getIdTurma(): int
+  + getIdAluno(): int
+}
+
+' Relacionamentos
+SystemUser "1" -- "*" Conteudo : criador/editor
+SystemUser "1" -- "*" ContentTag : criador/editor
+SystemUser "1" -- "*" ContentType : criador/editor
+SystemUser "1" -- "*" Questao : criador/editor
+SystemUser "1" -- "*" Alternativa : criador/editor
+SystemUser "1" -- "*" Atividade : criador/editor
+SystemUser "1" -- "1" Turma : responsavel
+SystemUser "1" -- "*" Turma : criador/editor
+
+Materia "1" -- "*" Conteudo : contém
+Materia "1" -- "*" Questao : contém
+Materia "1" -- "*" Atividade : contém
+
+Conteudo "*" -- "*" ContentTag : tem
+Conteudo "*" -- "*" ContentImage : contém
+Conteudo "1" -- "1" ContentType : tem
+
+Questao "1" -- "*" Alternativa : contém
+Questao "*" -- "*" Atividade : incluída em
+Questao "*" -- "*" AtividadeQuestao : referenciada
+
+Atividade "1" -- "*" AtividadeQuestao : contém
+Atividade "*" -- "*" Turma : atribuída
+
+Turma "1" -- "*" TurmaAluno : contém
+TurmaAluno "*" -- "1" SystemUser : representa
+
+SystemUser --|> TypeSystemUser : tipo
+SystemUser --|> StatusSystemUser : status
+Conteudo --|> StatusConteudo : status
+Questao --|> TipoQuestao : tipo
+Questao --|> StatusQuestao : status
+Alternativa --|> StatusQuestao : status
+Atividade --|> TipoAtividade : tipo
+Atividade --|> StatusAtividade : status
+Turma --|> StatusTurma : status
+
+@enduml

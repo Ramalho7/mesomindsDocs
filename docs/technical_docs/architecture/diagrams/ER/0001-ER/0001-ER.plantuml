@@ -1,264 +1,242 @@
 @startuml ER_Diagram
 
-entity "system_user" as user {
-  * id : int 
-  name : string 
-  email : string
-  password: string 
-  type: typeSystem_use 
-  criador : int
-  ultimo_editor : int
-  status: statusSystem_user
-  created_at : datetime
-  updated_at : datetime
+enum TypeSystemUser {
+  PROFESSOR
+  ALUNO
+  ADMIN
+  MODERADOR
+  OPERADOR
 }
 
+enum StatusSystemUser {
+  ATIVO
+  BLOQUEADO
+  INATIVO
+}
 
-entity "conteudos" as conteudos {
-  * id : int
-  title : string
-  content : longText
-  id_materia : int
-  criador : int
-  ultimo_editor : int
-  status : statusConteudo
+enum StatusConteudo {
+  RASCUNHO
+  ATIVO
+  INATIVO
+}
+
+enum TipoQuestao {
+  MULTIPLA
+  VERDADEIRO_FALSO
+  ABERTA
+}
+
+enum StatusQuestao {
+  ATIVO
+  INATIVO
+}
+
+enum TipoAtividade {
+  PROVA
+  SIMULADO
+  ATIVIDADE
+}
+
+enum StatusAtividade {
+  ATIVO
+  INATIVO
+}
+
+enum StatusTurma {
+  ATIVO
+  INATIVO
+}
+
+entity "system_user" as user {
+  * id : int {PK}
+  --
+  name : string
+  email : string
+  password : string
+  type : TypeSystemUser
+  status : StatusSystemUser
+  criador : int {FK}
+  ultimo_editor : int {FK}
+  --
   created_at : datetime
   updated_at : datetime
-  published_at: datetime
-  content_tags: content_tags
-  content_image: content_image
-  content_type: content_type
 }
 
 entity "materias" as materias {
-  * id : int
+  * id : int {PK}
 }
 
-entity content_tags {
-  * id: int 
-  tag_name: string
-  is_moderator_only: boolean
-  count: integer
-  description: string
-  criador : int
-  ultimo_editor : int
+entity "conteudos" as conteudos {
+  * id : int {PK}
+  --
+  title : string
+  content : longText
+  status : StatusConteudo
+  published_at : datetime
+  id_materia : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
-entity content_image {
-  * id: int
-  file_name: string
-  file_path: string
-  alt_text: string
-  base64_data: string
-  mime_type: string
+entity "content_types" as content_types {
+  * id : int {PK}
+  --
+  title : string
+  description : string
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
-entity content_types {
-  * id: int
-  title: string
-  description: string
-  criador : int
-  ultimo_editor : int
+entity "content_tags" as content_tags {
+  * id : int {PK}
+  --
+  tag_name : string
+  is_moderator_only : boolean
+  count : integer
+  description : string
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
-entity alternativas {
-  * id: int
-  questao: questao
-  valor: string
-  correta: boolean
-  criador : int
-  ultimo_editor : int
-  created_at : datetime
-  updated_at : datetime
-  Status: statusQuestao
-}
-
-entity questoes {
-  * id: int
-  titulo: string
-  corpo: string
-  materia: int
-  criador : int
-  ultimo_editor : int
-  created_at : datetime
-  updated_at : datetime
-  status: statusQuestao
-  tipo: tipoQuestao
-}
-
-entity atividades{ 
-  * id: int
-  nome: string
-  materia: int
-  tipoAtividade: tipoAtividade
-  prazoFinal: datetime
-  criador : int
-  ultimo_editor : int
+entity "content_image" as content_image {
+  * id : int {PK}
+  --
+  file_name : string
+  file_path : string
+  alt_text : string
+  base64_data : string
+  mime_type : string
+  --
   created_at : datetime
   updated_at : datetime
 }
 
-entity "turmas" as turmas {
-  * id : int
-  nome : string
-  limite : int
-  status : statusTurma
-  responsavel : int
-  criador : int
-  ultimo_editor : int
+entity "questoes" as questoes {
+  * id : int {PK}
+  --
+  titulo : string
+  corpo : string
+  tipo : TipoQuestao
+  status : StatusQuestao
+  id_materia : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
-entity "turma_alunos" as turma_alunos {
-  * id : int
-  id_turma : int
-  id_aluno : int
-  criador : int
-  ultimo_editor : int
-  status : enum { "Ativo", "Inativo" }
+entity "alternativas" as alternativas {
+  * id : int {PK}
+  --
+  valor : string
+  correta : boolean
+  status : StatusQuestao
+  id_questao : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
 entity "atividades" as atividades {
-  * id : int
+  * id : int {PK}
+  --
   nome : string
-  materia : int
-  tipo : enum { "Prova", "Simulado" }
+  tipo : TipoAtividade
+  status : StatusAtividade
   prazoFinal : datetime
-  criador : int
-  editor : int
-  status : enum { "Ativo", "Inativo" }
+  id_materia : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
 entity "atividades_questoes" as atividades_questoes {
-  * id : int
-  id_atividade : int
-  id_questao : int
-  criador : int
-  ultimo_editor : int
-  status : enum { "Ativo", "Inativo" }
+  * id : int {PK}
+  --
+  id_atividade : int {FK}
+  id_questao : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
   created_at : datetime
   updated_at : datetime
 }
 
-enum tipoAtividade{
-  Prova
-  Simulado
-  Atividade
+entity "turmas" as turmas {
+  * id : int {PK}
+  --
+  nome : string
+  limite : int
+  status : StatusTurma
+  id_responsavel : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
+  created_at : datetime
+  updated_at : datetime
 }
 
-enum tipoQuestao{
-  Multipla
-  VerdadeiroFalso
-  Aberta
+entity "turma_alunos" as turma_alunos {
+  * id : int {PK}
+  --
+  id_turma : int {FK}
+  id_aluno : int {FK}
+  --
+  criador : int {FK}
+  ultimo_editor : int {FK}
+  created_at : datetime
+  updated_at : datetime
 }
 
-enum statusTurma{
-  Ativo
-  Inativo
-}
+user ||--o{ conteudos : "criador/editor"
+user ||--o{ content_tags : "criador/editor"
+user ||--o{ content_types : "criador/editor"
+user ||--o{ questoes : "criador/editor"
+user ||--o{ alternativas : "criador/editor"
+user ||--o{ atividades : "criador/editor"
+user ||--o{ atividades_questoes : "criador/editor"
+user ||--o{ turmas : "criador/editor"
+user ||--o{ turma_alunos : "criador/editor"
+user ||--o{ turmas : "responsavel"
+user ||--o{ turma_alunos : "aluno"
 
-enum statusAtividade{
-  Ativo
-  Inativo
-}
+materias ||--o{ conteudos : "contém"
+conteudos ||--o{ content_tags : "tem"
+conteudos ||--o{ content_image : "contém"
+conteudos }o--|| content_types : "tem"
 
-enum statusQuestao{
-  Ativo
-  Inativo
-}
+questoes }o--|| materias : "contém"
+questoes ||--o{ alternativas : "contém"
+questoes }o--o{ atividades : "incluída em"
 
-enum typeSystem_user {
-  Professor 
-  Aluno 
-  Admin 
-  Moderador 
-  Operador
-}
+atividades }o--|| materias : "pertence"
+atividades ||--o{ atividades_questoes : "contém"
+atividades }o--o{ turmas : "atribuída"
 
-enum statusSystem_user {
-  Ativo
-  Bloqueado
-  Inativo
-}
+turmas ||--o{ turma_alunos : "contém"
 
-enum statusConteudo {
-  Rascunho
-  Ativo
-  Inativo
-}
-
-user -- typeSystem_user : type
-user -- statusSystem_user : status
-
-turmas -- statusTurma : status
-
-conteudos }o--|| materias : id_materia
-
-conteudos -- statusConteudo : status
-
-content_tags }o--o{ conteudos : content_tags
-
-content_image }o--o{ conteudos : content_image
-
-content_types ||--o{ conteudos : content_type
-
-questoes }o--|| tipoQuestao : tipo
-questoes -- statusQuestao : status
-alternativas -- statusQuestao : status
-
-questoes }o--o{ alternativas : contem
-
-questoes }o--|| materias : materia
-
-user ||--|| user : criador
-user ||--|| user : ultimo_editor
-conteudos ||--|| user : criador
-conteudos ||--|| user : ultimo_editor
-content_tags ||--|| user : criador
-content_tags ||--|| user : ultimo_editor
-content_types ||--|| user : criador
-content_types ||--|| user : ultimo_editor
-questoes ||--|| user : criador
-questoes ||--|| user : ultimo_editor
-atividades ||--|| user : criador
-atividades ||--|| user : ultimo_editor
-alternativas ||--|| user : criador
-alternativas ||--|| user : ultimo_editor
-turmas ||--|| user : responsavel
-turmas ||--|| user : criador
-turmas ||--|| user : ultimo_editor
-
-atividades }o--|| materias : materia
-
-atividades -- tipoAtividade : tipo
-atividades -- statusAtividade : status
-
-atividades }o--o{ questoes : contem
-
-turma_alunos }o--|| turmas : id_turma
-turma_alunos }o--|| user : id_aluno
-turma_alunos ||--|| user : criador
-turma_alunos ||--|| user : ultimo_editor
-
-atividades }o--|| materias : materia
-atividades ||--|| user : criador
-atividades ||--|| user : ultimo_editor
-atividades }o--o{ turmas : contém
-
-atividades_questoes }o--|| atividades : id_atividade
-atividades_questoes }o--|| questoes : id_questao
-atividades_questoes ||--|| user : criador
-atividades_questoes ||--|| user : ultimo_editor
+user -- TypeSystemUser : "type"
+user -- StatusSystemUser : "status"
+conteudos -- StatusConteudo : "status"
+questoes -- TipoQuestao : "tipo"
+questoes -- StatusQuestao : "status"
+alternativas -- StatusQuestao : "status"
+atividades -- TipoAtividade : "tipo"
+atividades -- StatusAtividade : "status"
+turmas -- StatusTurma : "status"
 
 @enduml
