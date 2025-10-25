@@ -244,33 +244,33 @@ class TurmaAluno {
   + getIdAluno(): int
 }
 
-' Relacionamentos com notação Crow's Foot
-SystemUser ||--o{ Conteudo : "criador/editor"
-SystemUser ||--o{ ContentTag : "criador/editor"
-SystemUser ||--o{ ContentType : "criador/editor"
-SystemUser ||--o{ Questao : "criador/editor"
-SystemUser ||--o{ Alternativa : "criador/editor"
-SystemUser ||--o{ Atividade : "criador/editor"
-SystemUser ||--|{ Turma : "responsavel"
-SystemUser ||--o{ Turma : "criador/editor"
+' Relacionamentos com notação de multiplicidade 1..*
+SystemUser "1" -- "0..*" Conteudo : "criador/editor"
+SystemUser "1" -- "0..*" ContentTag : "criador/editor"
+SystemUser "1" -- "0..*" ContentType : "criador/editor"
+SystemUser "1" -- "0..*" Questao : "criador/editor"
+SystemUser "1" -- "0..*" Alternativa : "criador/editor"
+SystemUser "1" -- "0..*" Atividade : "criador/editor"
+SystemUser "1" -- "1..*" Turma : "responsavel"
+SystemUser "1" -- "0..*" Turma : "criador/editor"
 
-Materia ||--o{ Conteudo : "contém"
-Materia ||--o{ Questao : "contém"
-Materia ||--o{ Atividade : "contém"
+Materia "1" -- "0..*" Conteudo : "contém"
+Materia "1" -- "0..*" Questao : "contém"
+Materia "1" -- "0..*" Atividade : "contém"
 
-Conteudo }o--o{ ContentTag : "tem"
-Conteudo ||--o{ ContentImage : "contém"
-Conteudo }|--|| ContentType : "tem"
+Conteudo "1" -- "0..*" ContentTag : "tem"
+Conteudo "1" -- "0..*" ContentImage : "contém"
+Conteudo "1" -- "1" ContentType : "tem"
 
-Questao ||--o{ Alternativa : "contém"
-Questao }o--o{ Atividade : "incluída em"
-Questao }o--o{ AtividadeQuestao : "referenciada"
+Questao "1" -- "1..*" Alternativa : "contém"
+Questao "0..*" -- "0..*" Atividade : "incluída em"
+Questao "1" -- "0..*" AtividadeQuestao : "referenciada"
 
-Atividade ||--o{ AtividadeQuestao : "contém"
-Atividade }o--o{ Turma : "atribuída"
+Atividade "1" -- "0..*" AtividadeQuestao : "contém"
+Atividade "0..*" -- "0..*" Turma : "atribuída"
 
-Turma ||--o{ TurmaAluno : "contém"
-TurmaAluno }o--|{ SystemUser : "representa"
+Turma "1" -- "0..*" TurmaAluno : "contém"
+TurmaAluno "0..*" -- "1" SystemUser : "representa"
 
 SystemUser --|> TypeSystemUser : tipo
 SystemUser --|> StatusSystemUser : status
