@@ -8,7 +8,7 @@ Este guia explica como configurar e executar Laravel Sail corretamente para o pr
 
 ### Requisitos
 
-- Docker 
+- Docker
 - Linux, MacOS ou WSL2
 
 # Passo a passo
@@ -150,16 +150,48 @@ curl http://127.0.0.1:8000/api/users
 **Problema:** Erro `ECONNRESET` ou `Connection reset by peer` ao acessar a aplicação
 
 **Solução:** Verifique se:
+
 1. As permissões de `storage` e `bootstrap/cache` estão corretas
 2. As chaves OAuth têm permissões `660`
 3. Os containers foram reiniciados após as alterações
 
 ---
 
+## Permissões usuários
+
+1. Lembre-se de adicionar seu usuário ao grupo docker para que consiga rodar os comandos corretamente sem uso de `sudo`
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Após a adição, reinicie a seção e rode o comando abaixo para que verificar se o seu user foi adicionado corretamente:
+
+```bash
+groups
+```
+
+Caso sim, deve aparecer o seu usuário participando do group docker.
+
+Pode ser que haja problema ao rodar o docker ainda, para isso tente alterar as persmissões do docker:
+
+```bash
+sudo chmod 666 /var/run/docker.sock
+```
+
+Após, isso, altere as permissões as pastas:
+
+```bash
+chmod 660 storage/oauth-public.key
+chmod 660 storage/oauth-private.key
+```
+
+---
+
 ## Informações adicionais
 
-- A aplicação estará acessível em: http://127.0.0.1:8000
-- Para testes de API, use este endereço base: http://127.0.0.1:8000/api/
+- A aplicação estará acessível em: <http://127.0.0.1:8000>
+- Para testes de API, use este endereço base: <http://127.0.0.1:8000/api/>
 - Não é necessário executar php artisan serve, pois o container já disponibiliza a aplicação
 
 #### Criando alias para o sail
@@ -172,7 +204,7 @@ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 ## Links
 
-[Documentação laravel sail](https://laravel.com/docs/12.x/sail)
-[Download docker](https://www.docker.com/products/docker-desktop/)
-[Download git](https://git-scm.com/downloads)
-[Download WSL2](https://learn.microsoft.com/pt-br/windows/wsl/install)
+- [Documentação laravel sail](https://laravel.com/docs/12.x/sail)
+- [Download docker](https://www.docker.com/products/docker-desktop/)
+- [Download git](https://git-scm.com/downloads)
+- [Download WSL2](https://learn.microsoft.com/pt-br/windows/wsl/install)
