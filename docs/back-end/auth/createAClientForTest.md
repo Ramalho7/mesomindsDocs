@@ -4,13 +4,13 @@ Isso será útil em muitos momento que será preciso testar algum endpoint que �
 
 ---
 
-- Para isso, podemos seguir os comandos: 
+- Para isso, podemos seguir os comandos:
 
 ```bash
 php artisan tinker
 ```
 
--. Dentro do tinker do artisan, usamos o comando: 
+-. Dentro do tinker do artisan, usamos o comando:
 
 ```bash
 $user = \App\Models\SystemUser::first();
@@ -36,7 +36,7 @@ $user = \App\Models\SystemUser::where('tipo', 'Moderador')->first();
 php artisan passport:client --personal
 ```
 
-- Você se depará com uma tela de dialogo parecida com essa: 
+- Você se depará com uma tela de dialogo parecida com essa:
 
 ![alt text](./images/personalTokenPassportLaravel.png)
 
@@ -57,7 +57,7 @@ echo "Bearer " . $token->accessToken;
 
 ### No postman
 
-- Dentro do postman, você irá em `Headers` adicionará: as keys `Authorization` e `Accept` 
+- Dentro do postman, você irá em `Headers` adicionará: as keys `Authorization` e `Accept`
   - `Authorization`: adicione o seu Acess Token fornecido no echo ao `value` no header
   - `Accept`: adicione o texto: application/json ao `value` no header
 
