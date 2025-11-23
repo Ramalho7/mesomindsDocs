@@ -1,0 +1,7 @@
+{
+  "label": "Documentação técnica",
+  "link": {
+    "type": "generated-index",
+    "description": "Documentação sobre técnica do projeto, com diagramas, ADRs, PRDs, etc"
+  }
+}

@@ -34,7 +34,7 @@ API --> Cliente : 200 OK (lista de pedidos)
 deactivate API
 @enduml
 ```
-![Exemplo simples](../../../../out/docs/technical_docs/architecture/sequenceDiagram/simpleExample/simpleExample.svg)
+![Exemplo simples](/img/sequenceDiagram/simpleExample/simpleExample.svg)
 
 ---
 

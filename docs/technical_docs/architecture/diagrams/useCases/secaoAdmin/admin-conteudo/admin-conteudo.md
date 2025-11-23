@@ -69,4 +69,4 @@ Permite que atores autorizados criem, editem, removam e visualizem conteúdos na
 
 ## Diagrama de Caso de Uso
 
-![Diagrama - Gerenciar Conteúdos](../../../../../../../out/docs/technical_docs/architecture/diagrams/useCases/secaoAdmin/admin-conteudo/admin-conteudo/admin-conteudo.svg)
+![Diagrama - Gerenciar Conteúdos](/img/diagrams/useCases/secaoAdmin/admin-conteudo/admin-conteudo/admin-conteudo.svg)

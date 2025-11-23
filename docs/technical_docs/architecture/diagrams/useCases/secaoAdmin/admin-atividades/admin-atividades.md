@@ -68,4 +68,4 @@ Permite que atores autorizados criem, editem, removam e visualizem atividades na
 
 ## Diagrama de caso de uso
 
-![Diagrama - Gerenciar atividades](../../../../../../../out/docs/technical_docs/architecture/diagrams/useCases/secaoAdmin/admin-atividades/admin-atividades/admin-atividades.svg)
+![Diagrama - Gerenciar atividades](/img/diagrams/useCases/secaoAdmin/admin-atividades/admin-atividades/admin-atividades.svg)

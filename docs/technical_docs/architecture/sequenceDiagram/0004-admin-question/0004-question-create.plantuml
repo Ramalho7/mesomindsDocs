@@ -1,0 +1,34 @@
+@startuml
+
+title Create questions
+
+actor "Usuário (Admin/Moderador/Operador)" as User
+participant "Web App (Frontend)" as Web
+participant "API (Backend)" as Auth
+database "DB" as DB
+participant "Session Store" as Session
+
+User -> Web: Abre página de criação de questões
+activate Web
+Web -> Session: Verifica sessão (token)
+activate Session
+Session --> Web: sessão válida + role=[admin, moderador, operador]
+deactivate Session
+
+alt autenticado
+    User -> Web: Preenche formulário e clica Criar
+    Web -> Auth: POST /questao (token, payload)
+    activate Auth
+    Auth -> DB: INSERT INTO quesrions
+    activate DB
+    DB --> Auth: 201 Created (questão + id)
+    deactivate DB
+    Auth --> Web: 201 Created (id, dados)
+    deactivate Auth
+    Web --> User: Confirmação (questão criada, id)
+else não autenticado
+    Web --> User: Redireciona para /login 
+end
+deactivate Web
+
+@enduml
