@@ -1,0 +1,44 @@
+@startuml 
+actor "Usuário" as User
+participant "Web App(Frontend)" as Web
+participant "Auth API(Backend)" as Auth
+database "User DB" as DB
+participant "Email Service" as Email
+
+User -> Web: Abre página de registro
+activate Web
+
+User -> Web: Preenche formulário (nome, email, senha, tipo de usuário)
+User -> Web: Clica em "Registrar"
+
+Web -> Auth: POST /api/register {nome, email, senha, tipo_usuario}
+activate Auth
+
+Auth -> DB: Verifica se email já existe
+activate DB
+DB --> Auth: resultado da consulta
+deactivate DB
+
+alt email já existe
+    Auth -> Web: 409 Conflict {erro: "Email já cadastrado"}
+    Web -> User: Mostrar mensagem de erro
+else email disponível
+    Auth -> Auth: Hash da senha
+    Auth -> DB: Criar novo usuário {nome, email, password_hash, tipo_usuario, status: "pendente"}
+    activate DB
+    DB --> Auth: usuário criado com ID
+    deactivate DB
+    
+    Auth -> Auth: Gerar token de verificação
+    Auth -> Email: Enviar email de verificação {email, token_verificacao}
+    activate Email
+    Email --> Auth: email enviado
+    deactivate Email
+    
+    Auth -> Web: 201 Created {mensagem: "Verifique seu email", user_id}
+    Web -> User: Mostrar mensagem de sucesso\n"Verifique seu email para ativar sua conta"
+end
+
+deactivate Auth
+deactivate Web
+@enduml
