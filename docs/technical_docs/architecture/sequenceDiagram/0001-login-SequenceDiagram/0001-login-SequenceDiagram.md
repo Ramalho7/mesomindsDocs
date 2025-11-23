@@ -90,4 +90,4 @@ Fluxo de autenticação simples: Usuário -> Frontend (Web App) -> Auth API -> U
 
 ## Diagrama de sequência
 
-![Diagrama de sequência - Login](../../../../../out/docs/technical_docs/architecture/sequenceDiagram/0001-login-SequenceDiagram/0001-login-SequenceDiagram/0001-login-SequenceDiagram.svg)
+![Diagrama de sequência - Login](/img/sequenceDiagram/0001-login-SequenceDiagram/0001-login-SequenceDiagram.svg)

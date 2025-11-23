@@ -1,0 +1,39 @@
+@startuml
+
+title Delete questions
+
+actor "Usuário (Admin)" as User
+participant "Web App (Frontend)" as Web
+participant "API (Backend)" as API
+participant "Auth Service" as Auth
+database "Database" as DB
+
+User -> Web : DELETE /questions/{id}\n(Authorization: Bearer <token>)
+activate Web
+Web -> API : DELETE /questions/{id}\n(Authorization: Bearer <token>)
+activate API
+API -> Auth : validarToken(token)
+activate Auth
+Auth --> API : role = ADMIN / role != ADMIN
+deactivate Auth
+
+alt role == ADMIN
+    API -> DB : DELETE FROM questions WHERE id = {id}
+    activate DB
+    DB --> API : 200 OK / 0 rows | 200 OK / deleted
+    deactivate DB
+    alt deleted
+        API --> Web : 204 No Content
+        Web --> User : 204 No Content
+    else not found
+        API --> Web : 404 Not Found
+        Web --> User : 404 Not Found
+    end
+else role != ADMIN
+    API --> Web : 403 Forbidden
+    Web --> User : 403 Forbidden
+end
+deactivate API
+deactivate Web
+
+@enduml

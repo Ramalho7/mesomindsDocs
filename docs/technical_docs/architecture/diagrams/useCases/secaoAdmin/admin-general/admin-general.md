@@ -24,4 +24,4 @@ Este diagrama apresenta os casos de uso de gerenciamento da plataforma Mesominds
 
 ## Diagrama de Casos de Uso - Admin
 
-![Diagrama de Casos de Uso - Admin](../../../../../../../out/docs/technical_docs/architecture/diagrams/useCases/secaoAdmin/admin-general/admin-general/admin-general.png)
+![Diagrama de Casos de Uso - Admin](/img/diagrams/useCases/secaoAdmin/admin-general/admin-general/admin-general.png)

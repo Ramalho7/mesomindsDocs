@@ -4,5 +4,5 @@ Esta seção reúne os diagramas UML utilizados na documentação técnica da pl
 
 ## Diagramas disponíveis
 
-- [Modelo Inicial do Banco de Dados](./0001-UML/0001-UML.md)
-- [Modelo V2 do Banco de Dados](./0002-UML/0002-UML.md)
+- [Modelo Inicial do Banco de Dados](./a-0001-UML/0001-UML.md)
+- [Modelo V2 do Banco de Dados](./b-0002-UML/0002-UML.md)

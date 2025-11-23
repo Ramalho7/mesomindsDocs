@@ -190,8 +190,8 @@ chmod 660 storage/oauth-private.key
 
 ## Informações adicionais
 
-- A aplicação estará acessível em: <http://127.0.0.1:8000>
-- Para testes de API, use este endereço base: <http://127.0.0.1:8000/api/>
+- A aplicação estará acessível em: `<http://127.0.0.1:8000>`
+- Para testes de API, use este endereço base: `<http://127.0.0.1:8000/api/>`
 - Não é necessário executar php artisan serve, pois o container já disponibiliza a aplicação
 
 #### Criando alias para o sail
