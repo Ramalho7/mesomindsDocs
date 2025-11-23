@@ -1,0 +1,53 @@
+@startuml
+
+actor "Usuário (Admin/Moderador/Operador)" as User
+participant "Web App (Frontend)" as Web
+participant "API (Backend)" as Auth
+database "DB" as DB
+participant "Session Store" as Session
+
+User -> Web: Abre página de edição de questões
+activate Web
+Web -> Session: Verifica sessão (token)
+activate Session
+Session --> Web: Sessão válida + role=[admin, moderador, operador]
+deactivate Session
+
+alt autenticado
+    Web -> Auth: GET /questoes/{id} (token)
+    activate Auth
+    Auth -> DB: SELECT * FROM questoes WHERE id = {id}
+    activate DB
+    DB --> Auth: Dados da questão
+    deactivate DB
+    Auth --> Web: Dados da questão
+    deactivate Auth
+
+    User -> Web: Altera informações e clica Salvar
+
+    Web -> Web: Valida payload com Zod
+    alt erro validação
+        Web -> User: Mostra erros de validação
+    end
+
+    Web -> Auth: PUT /questoes/{id} (token, payload validado)
+    activate Auth
+
+    alt novas alternativas fornecidas ou tipo da questão alterado
+        Auth -> DB: DELETE FROM alternativas WHERE questao_id = {id}
+        activate DB
+        Auth -> DB: INSERT INTO alternativas (novas alternativas)
+    end
+
+    Auth -> DB: UPDATE questoes SET ... WHERE id = {id}
+    DB --> Auth: 200 OK
+    deactivate DB
+    Auth --> Web: 200 OK (dados atualizados)
+    deactivate Auth
+    Web --> User: Confirmação (questão atualizada)
+else não autenticado
+    Web --> User: Redireciona para /login
+end
+deactivate Web
+
+@enduml

@@ -1,0 +1,72 @@
+@startuml
+
+skinparam defaultFontSize 16
+skinparam entityFontSize 16
+skinparam ArrowFontSize 14
+skinparam entityBackgroundColor #1B2430
+skinparam entityBorderColor #9FB7C7
+skinparam entityBorderThickness 2
+skinparam lineThickness 2
+skinparam shadowing false
+skinparam roundcorner 6
+skinparam linetype ortho
+skinparam padding 20
+skinparam entityPadding 22
+skinparam nodesep 200
+skinparam ranksep 100
+skinparam classAttributeIconSize 0
+
+top to bottom direction
+
+entity "User" as User
+entity "Subject" as Subject
+entity "Topic" as Topic
+entity "SubjectTopic" as ST
+entity "Content" as Content
+entity "Class" as Class
+entity "QuestionCollection" as QC
+entity "Question" as Question
+entity "Alternative" as Alternative
+entity "QuestionCollectionPivot" as QCP
+entity "QuestionAnswer" as QAns
+
+entity "ContentType" as CT
+entity "ContentImage" as CI
+entity "ContentTag" as CTag
+
+Subject "1" -- "N" Content
+Subject "1" -- "N" ST
+Topic "1" -- "N" ST
+
+Subject "1" -- "N" Class
+User "N" -- "N" Class 
+
+
+Class "N" -- "N" QC 
+
+note left of QC
+  O relacionamento com "Class" é N:N porque:
+  - Uma turma pode utilizar várias coleções (provas, atividades, simulados)
+  - Uma coleção pode ser atribuída a várias turmas
+  - Algumas coleções podem ser públicas e reutilizadas entre diferentes turmas
+end note
+
+QC "1" -- "N" QCP
+Question "1" -- "N" QCP
+
+Question "1" -- "N" Alternative
+
+Question "1" -- "N" QAns
+User "1" -- "N" QAns
+
+note top of QAns
+  Armazenado apenas em:
+  - Simulados especiais da plataforma(eventos, campeonados, etc)
+  - Atividades de turma para avaliação do professor
+end note
+
+CT "1" -- "N" Content
+CI "N" -- "N" Content
+CTag "N" -- "N" Content
+
+@enduml
