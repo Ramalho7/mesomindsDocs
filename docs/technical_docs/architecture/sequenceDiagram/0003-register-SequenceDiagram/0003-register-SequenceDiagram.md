@@ -3,22 +3,19 @@ title: Diagrama de Sequência - Registro
 ---
 
 ## Resumo
-Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API → User DB → Email Service. Cria novo usuário, envia email de verificação e retorna confirmação.
+Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API → User DB → Session Store. Cria novo usuário, valida credenciais no banco e retorna token de sessão.
 
 ## Pré-condições
 - Usuário não possui conta registrada.
 - Frontend acessível via HTTPS.
-- Banco de usuários e serviço de email operacionais.
-- Email do usuário é válido e acessível.
-
-## Diagrama
+- Banco de usuários e serviço de sessão operacionais.
 
 ## Atores / Componentes
 - Usuário (actor)
 - Web App (frontend)
 - Auth API (backend responsável por autenticação)
 - User DB (base de dados de usuários)
-- Email Service (serviço de envio de emails)
+- Session Store (serviço que emite/guarda tokens ou session ids)
 
 ## Fluxo Principal (passo a passo)
 1. Usuário abre a página de registro.
@@ -29,14 +26,12 @@ Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API �
 6. User DB retorna resultado da consulta.
 7. Se email disponível:
    - Auth API faz hash da senha.
-   - Auth API cria novo usuário no User DB com status "pendente".
+   - Auth API cria novo usuário no User DB.
    - User DB retorna usuário criado com ID.
-   - Auth API gera token de verificação.
-   - Auth API envia email de verificação via Email Service.
-   - Email Service confirma envio do email.
-   - Auth API responde 201 Created com mensagem de sucesso.
-   - Frontend mostra mensagem "Verifique seu email para ativar sua conta".
-
+   - Auth API cria sessão/token no Session Store.
+   - Session Store retorna token/session id.
+   - Auth API responde 201 Created com token e informações do usuário.
+   - Frontend salva token e redireciona para dashboard.
 8. Se email já existe:
    - Auth API responde 409 Conflict com erro.
    - Frontend mostra mensagem de erro "Email já cadastrado".
@@ -49,7 +44,7 @@ Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API �
   "nome": "João Silva",
   "email": "joao@example.com",
   "senha": "plaintext",
-  "tipo_usuario": "cliente"
+  "tipo_usuario": "aluno"
 }
 ```
 - Resposta (sucesso):
@@ -57,8 +52,13 @@ Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API �
 {
   "status": 201,
   "body": {
-    "mensagem": "Verifique seu email para ativar sua conta",
-    "user_id": 456
+    "token": "eyJ...",
+    "user": {
+      "id": 456,
+      "nome": "João Silva",
+      "email": "joao@example.com",
+      "tipo_usuario": "aluno"
+    }
   }
 }
 ```
@@ -73,39 +73,32 @@ Fluxo de criação de nova conta: Usuário → Frontend (Web App) → Auth API �
 }
 ```
 
-Paylod do Email de Verificação:
-``` json
-{
-  "to": "joao@example.com",
-  "subject": "Verifique sua conta",
-  "body": "Clique no link para ativar sua conta: https://app.com/verify?token=abc123..."
-}
-```
 ## Fluxos alternativos
-- Registro com verificação automática: Usuário é logado automaticamente após registro.
-- Registro sem verificação por email: Conta é ativada imediatamente (menos seguro).
-- Reenvio de email de verificação: Fluxo separado via /resend-verification.
+- Registro com dados inválidos: Validação no frontend/backend retorna erro 400.
+- Problema no Session Store: Auth API retorna erro 503 Service Unavailable.
+- Timeout na conexão: Frontend mostra mensagem de erro de conexão.
 
 ## Pós-condições
-- Em caso de sucesso: usuário criado com status pendente, email de verificação enviado.
+- Em caso de sucesso: usuário criado, sessão ativa, token válido retornado.
 - Em caso de falha: nenhum usuário criado, dados descartados.
-- Usuário precisa verificar email para completar o registro.
+- Usuário autenticado e redirecionado para área logada.
 
 ## Segurança / Boas práticas
 - Sempre fazer hash da senha antes de armazenar no banco (usar bcrypt/argon2).
 - Validar força da senha no frontend e backend.
 - Implementar rate limiting para prevenir spam de registros.
-- Token de verificação deve expirar (ex: 24h).
+- Tokens devem ter expiração adequada.
 - Não expor informações sensíveis em respostas de erro.
+- Validar todos os dados de entrada no backend.
 
 ## Observações de implementação
 - Considerar validação de dados no frontend e backend.
 - Logar tentativas de registro para auditoria.
 - Para tipos de usuário diferentes, considerar fluxos específicos de onboarding.
-- Em ambientes de desenvolvimento, pode-se implementar "email preview" para testar sem enviar emails reais.
+- Session Store pode ser Redis, banco de dados, ou serviço JWT.
 
 ---
 
 ## Diagrama de sequência
 
-![Diagrama de sequência - Registro](../../../../../out/docs/technical_docs/architecture/sequenceDiagram/0003-register-SequenceDiagram/0003-register-SequenceDiagram/0003-register-SequenceDiagram.svg)
+![Diagrama de sequência - Registro](/img/sequenceDiagram/0003-register-SequenceDiagram/0003-register-SequenceDiagram.svg)

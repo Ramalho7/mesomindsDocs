@@ -1,9 +1,13 @@
-@startuml 
+
+E aqui está o diagrama UML atualizado correspondente:
+
+```plantuml
+@startuml
 actor "Usuário" as User
 participant "Web App(Frontend)" as Web
 participant "Auth API(Backend)" as Auth
 database "User DB" as DB
-participant "Email Service" as Email
+participant "Session Store" as Session
 
 User -> Web: Abre página de registro
 activate Web
@@ -24,19 +28,18 @@ alt email já existe
     Web -> User: Mostrar mensagem de erro
 else email disponível
     Auth -> Auth: Hash da senha
-    Auth -> DB: Criar novo usuário {nome, email, password_hash, tipo_usuario, status: "pendente"}
+    Auth -> DB: Criar novo usuário {nome, email, password_hash, tipo_usuario}
     activate DB
     DB --> Auth: usuário criado com ID
     deactivate DB
     
-    Auth -> Auth: Gerar token de verificação
-    Auth -> Email: Enviar email de verificação {email, token_verificacao}
-    activate Email
-    Email --> Auth: email enviado
-    deactivate Email
+    Auth -> Session: criar sessão / token (JWT)
+    activate Session
+    Session --> Auth: token / session id
+    deactivate Session
     
-    Auth -> Web: 201 Created {mensagem: "Verifique seu email", user_id}
-    Web -> User: Mostrar mensagem de sucesso\n"Verifique seu email para ativar sua conta"
+    Auth -> Web: 201 Created {token, user_info}
+    Web -> User: Redirecionar para dashboard / salvar token
 end
 
 deactivate Auth
