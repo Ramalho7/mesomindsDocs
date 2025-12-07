@@ -25,6 +25,7 @@ entity "Discipline" as Discipline
 entity "Topic" as Topic
 entity "SkillTopic" as ST
 entity "Content" as Content
+entity "ContentAttachment" as CA
 entity "Class" as Class
 entity "QuestionCollection" as QC
 entity "QuestionCollectionClassPivot" as QCCP
@@ -82,5 +83,5 @@ Question "1" -- "N" Alternative
     CT "1" -- "N" Content
     CI "N" -- "N" Content
     CTag "N" -- "N" Content
-
+    CA "N" -- "1" Content
     @enduml

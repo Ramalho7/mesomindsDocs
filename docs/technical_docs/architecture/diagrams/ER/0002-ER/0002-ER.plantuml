@@ -1,0 +1,299 @@
+@startuml
+!define primary_key(x) <b><color:#FFD700><&key></color> x</b>
+!define foreign_key(x) <color:#87CEEB><&arrow-right></color> x
+!define unique(x) <color:#90EE90><&star></color> x
+
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam shadowing false
+skinparam padding 15
+skinparam nodesep 120
+skinparam ranksep 120
+
+skinparam class {
+    BorderColor #9FB7C7
+    BorderThickness 2
+    ArrowColor #9FB7C7
+    ArrowThickness 2
+    FontSize 16
+    AttributeFontSize 15
+}
+
+skinparam note {
+    BorderColor #9FB7C7
+    FontSize 16
+}
+
+left to right direction
+
+    entity "system_users" as User {
+        primary_key(id) : UUID
+        --
+        foreign_key(created_by) : UUID
+        foreign_key(updated_by) : UUID
+        --
+        unique(email) : VARCHAR(255)
+        name : VARCHAR(255)
+        password : VARCHAR(255)
+        role : ENUM('student', 'teacher', 'admin', 'moderator', 'operator')
+        status : ENUM('active', 'inactive', 'banned', 'pending')
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "disciplines" as Discipline {
+        primary_key(id) : UUID
+        --
+        name : VARCHAR(100)
+        unique(slug) : VARCHAR(100)
+        description : TEXT
+        color : VARCHAR(7)
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "skills" as Skill {
+        primary_key(id) : UUID
+        --
+        foreign_key(discipline_id) : UUID
+        unique(bncc_reference) : VARCHAR(100)
+        description : TEXT
+        year_level : INT
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "topics" as Topic {
+        primary_key(id) : UUID
+        --
+        foreign_key(discipline_id) : UUID
+        name : VARCHAR(200)
+        description : TEXT
+        order : INT
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "skill_topics" as ST {
+        primary_key(id) : UUID
+        --
+        foreign_key(skill_id) : UUID
+        foreign_key(topic_id) : UUID
+    }
+
+    entity "content_types" as CT {
+        primary_key(id) : UUID
+        --
+        name : VARCHAR(50)
+        unique(slug) : VARCHAR(50)
+        icon : VARCHAR(50)
+        description : TEXT
+    }
+
+    entity "contents" as Content {
+        primary_key(id) : UUID
+        --
+        foreign_key(topic_id) : UUID
+        foreign_key(content_type_id) : UUID
+        --
+        foreign_key(created_by) : UUID
+        foreign_key(updated_by) : UUID
+        --
+        title : VARCHAR(255)
+        description : LONGTEXT
+        body : LONGTEXT
+        duration_minutes : INT
+        difficulty_level : INT
+        is_published : BOOLEAN
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "content_attachments" as CA {
+        primary_key(id) : UUID
+        --
+        foreign_key(content_id) : UUID
+        foreign_key(uploaded_by) : UUID
+        file_name : VARCHAR(255)
+        file_path : VARCHAR(500)
+        file_type : VARCHAR(100)
+        file_size : BIGINT
+        mime_type : VARCHAR(100)
+        order : INT
+        is_downloadable : BOOLEAN
+        download_count : INT
+        --
+        created_at : TIMESTAMP
+    }
+
+    entity "content_tags" as CTag {
+        primary_key(id) : UUID
+        --
+        name : VARCHAR(50)
+        unique(slug) : VARCHAR(50)
+        color : VARCHAR(7)
+    }
+
+    entity "content_tag_pivot" as CTP {
+        primary_key(id) : UUID
+        --
+        foreign_key(content_id) : UUID
+        foreign_key(tag_id) : UUID
+    }
+
+
+    entity "classes" as Class {
+        primary_key(id) : UUID
+        --
+        foreign_key(discipline_id) : UUID
+        foreign_key(created_by) : UUID
+        --
+        name : VARCHAR(100)
+        unique(code) : VARCHAR(20)
+        description : TEXT
+        year : INT
+        semester : INT
+        is_public : BOOLEAN
+        status : ENUM('active', 'archived', 'inactive')
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "user_classes" as UserClass {
+        primary_key(id) : UUID
+        --
+        foreign_key(user_id) : UUID
+        foreign_key(class_id) : UUID
+        role : ENUM('student', 'teacher')
+        enrolled_at : TIMESTAMP
+        status : ENUM('active', 'inactive', 'dropped')
+    }
+
+
+    entity "question_collections" as QC {
+        primary_key(id) : UUID
+        --
+        foreign_key(created_by) : UUID
+        foreign_key(updated_by) : UUID
+        --
+        title : VARCHAR(255)
+        description : TEXT
+        type : ENUM('exam', 'activity', 'practice', 'quiz', 'simulated')
+        is_public : BOOLEAN
+        duration_minutes : INT
+        total_points : DECIMAL(10,2)
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    entity "question_collection_class_pivot" as QCCP {
+        primary_key(id) : UUID
+        --
+        foreign_key(collection_id) : UUID
+        foreign_key(class_id) : UUID
+        assigned_at : TIMESTAMP
+        due_date : TIMESTAMP
+        available_from : TIMESTAMP
+        available_until : TIMESTAMP
+        attempts_allowed : INT
+    }
+
+    entity "questions" as Question {
+        primary_key(id) : UUID
+        --
+        foreign_key(created_by) : UUID
+        foreign_key(updated_by) : UUID
+        --
+        statement : LONGTEXT
+        explanation : LONGTEXT
+        difficulty : INT
+        question_type : ENUM('multiple_choice', 'true_false', 'essay')
+        --
+        created_at : TIMESTAMP
+        updated_at : TIMESTAMP
+    }
+
+    note top of Question
+        - Dificuldade varia de 1 (mais fácil) a 100 (mais difícil)
+    end note
+
+    entity "question_collection_pivot" as QCP {
+        primary_key(id) : UUID
+        --
+        foreign_key(collection_id) : UUID
+        foreign_key(question_id) : UUID
+        order : INT
+        points : DECIMAL(10,2)
+    }
+
+    entity "alternatives" as Alternative {
+        primary_key(id) : UUID
+        --
+        foreign_key(question_id) : UUID
+        text : LONGTEXT
+        is_correct : BOOLEAN
+        order : INT
+    }
+
+    entity "question_answers" as QAns {
+        primary_key(id) : UUID
+        --
+        foreign_key(user_id) : UUID
+        foreign_key(question_id) : UUID
+        foreign_key(alternative_id) : UUID
+        answer_text : LONGTEXT
+        is_correct : BOOLEAN
+        answered_at : TIMESTAMP
+        points_earned : DECIMAL(10,2)
+    }
+
+' ============ RELACIONAMENTOS ============
+
+' Auto-relacionamento de Usuários
+User }o--o{ User
+
+' Estrutura Curricular
+Discipline ||--o{ Skill 
+Discipline ||--o{ Topic 
+Discipline ||--o{ Class 
+
+Topic ||--o{ Content 
+Topic ||--o{ ST 
+
+Skill ||--o{ ST 
+
+' Conteúdos
+CT ||--o{ Content 
+Content ||--o{ CA 
+Content ||--o{ CTP 
+CTag ||--o{ CTP 
+
+' Autoria e Edição
+User ||--o{ Content 
+User ||--o{ CA 
+User ||--o{ Class 
+User ||--o{ QC 
+User ||--o{ Question 
+
+' Turmas
+User ||--o{ UserClass 
+Class ||--o{ UserClass 
+
+' Avaliações
+Class ||--o{ QCCP 
+QC ||--o{ QCCP 
+QC ||--o{ QCP 
+Question ||--o{ QCP 
+Question ||--o{ Alternative 
+' Respostas
+User ||--o{ QAns 
+Question ||--o{ QAns 
+
+@enduml
