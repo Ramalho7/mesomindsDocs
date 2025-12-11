@@ -1,0 +1,119 @@
+@startuml
+
+skinparam defaultFontSize 15
+skinparam entityFontSize 15
+skinparam ArrowFontSize 13
+skinparam entityBackgroundColor #F5F5F5
+skinparam entityBorderColor #666666
+skinparam entityBorderThickness 2
+skinparam lineThickness 2
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam linetype ortho
+skinparam padding 30
+skinparam nodesep 200
+skinparam ranksep 150
+
+left to right direction
+
+entity "User" as User
+
+entity "Discipline" as Discipline
+
+entity "Skill" as Skill
+entity "Topic" as Topic
+
+entity "SkillTopic" as ST
+
+entity "ContentType" as CT
+
+entity "Content" as Content
+
+entity "ContentAttachment" as CA
+entity "ContentTag" as CTag
+entity "ContentImage" as CI
+
+entity "Class" as Class
+
+entity "UserClass" as UserClass
+
+entity "QuestionCollection" as QC
+
+entity "Question" as Question
+
+entity "QuestionCollectionPivot" as QCP
+entity "QuestionCollectionClassPivot" as QCCP
+
+entity "Alternative" as Alternative
+entity "QuestionAnswer" as QAns
+
+' ==================== RELACIONAMENTOS ====================
+
+' User como criador (linhas pontilhadas)
+User "1" .. "N" Skill
+User "1" .. "N" Topic
+
+' Discipline -> Skill, Topic, Class
+Discipline "1" -- "N" Skill
+Discipline "1" -- "N" Topic
+Discipline "1" -- "N" Class
+
+' Skill <-> Topic (N:N via ST)
+Skill "N" -- "1" ST
+Topic "N" -- "1" ST
+
+' Topic -> Content
+Topic "1" -- "N" Content
+
+' ContentType -> Content
+CT "1" -- "N" Content
+
+' Content -> Attachments, Tags, Images
+Content "1" -- "N" CA
+Content "N" -- "N" CTag
+Content "N" -- "N" CI
+
+' User <-> Class (N:N via UserClass)
+User "1" -- "N" UserClass
+Class "1" -- "N" UserClass
+
+' QuestionCollection relationships
+QC "1" -- "N" QCP
+QC "1" -- "N" QCCP
+
+' Question relationships
+Question "1" -- "N" QCP
+Question "1" -- "N" Alternative
+Question "1" -- "N" QAns
+
+' Class -> QCCP
+Class "1" -- "N" QCCP
+
+' User -> Answers
+User "1" -- "N" QAns
+
+' ==================== NOTAS ====================
+
+note top of Skill
+    <b>Habilidades BNCC</b>
+    Exemplo: (EF01MA01)
+    Usado para análise detalhada
+    do desempenho dos alunos
+end note
+
+note bottom of QC
+    <b>Coleções de Questões</b>
+    N:N com Class porque:
+    • Uma turma usa várias coleções
+    • Uma coleção é usada em várias turmas
+    • Coleções públicas são reutilizáveis
+end note
+
+note bottom of QAns
+    <b>Respostas armazenadas em:</b>
+    • Simulados especiais
+    • Atividades de turma
+    • Eventos e campeonatos
+end note
+
+@enduml

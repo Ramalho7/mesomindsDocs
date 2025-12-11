@@ -1,0 +1,356 @@
+@startuml
+!define primary_key(x) <b><color:#FFD700><&key></color> x</b>
+!define foreign_key(x) <color:#87CEEB><&arrow-right></color> x
+!define unique(x) <color:#90EE90><&star></color> x
+
+skinparam linetype ortho
+skinparam roundcorner 10
+skinparam shadowing false
+skinparam padding 15
+skinparam nodesep 150
+skinparam ranksep 120
+
+skinparam class {
+    BorderColor #9FB7C7
+    BorderThickness 2
+    ArrowColor #9FB7C7
+    ArrowThickness 2
+    FontSize 16
+    AttributeFontSize 15
+}
+
+skinparam note {
+    BorderColor #9FB7C7
+    FontSize 14
+    BackgroundColor #FFF9E6
+}
+
+left to right direction
+
+entity "system_users" as User {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    unique(email) : VARCHAR(255)
+    name : VARCHAR(255)
+    password : VARCHAR(255)
+    role : ENUM('student', 'teacher', 'admin', 'moderator', 'operator')
+    status : ENUM('active', 'inactive', 'banned', 'pending')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "disciplines" as Discipline {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    name : VARCHAR(100)
+    unique(slug) : VARCHAR(100)
+    description : TEXT
+    color : VARCHAR(7)
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "skills" as Skill {
+    primary_key(id) : ULID
+    --
+    foreign_key(discipline_id) : ULID
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    unique(bncc_reference) : VARCHAR(100)
+    description : TEXT
+    year_level : INT
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "topics" as Topic {
+    primary_key(id) : ULID
+    --
+    foreign_key(discipline_id) : ULID
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    name : VARCHAR(200)
+    description : TEXT
+    order : INT
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "skill_topics" as ST {
+    primary_key(id) : ULID
+    --
+    foreign_key(skill_id) : ULID
+    foreign_key(topic_id) : ULID
+}
+
+entity "content_types" as CT {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    name : VARCHAR(50)
+    unique(slug) : VARCHAR(50)
+    icon : VARCHAR(50)
+    description : TEXT
+    status : ENUM('active', 'inactive')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "contents" as Content {
+    primary_key(id) : ULID
+    --
+    foreign_key(topic_id) : ULID
+    foreign_key(content_type_id) : ULID
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    title : VARCHAR(255)
+    description : LONGTEXT
+    body : LONGTEXT
+    duration_minutes : INT
+    difficulty_level : INT
+    is_published : BOOLEAN
+    status : ENUM('draft', 'published', 'archived', 'inactive', 'active')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "content_attachments" as CA {
+    primary_key(id) : ULID
+    --
+    foreign_key(content_id) : ULID
+    foreign_key(uploaded_by) : ULID
+    --
+    file_name : VARCHAR(255)
+    file_path : VARCHAR(500)
+    file_type : VARCHAR(100)
+    file_size : BIGINT
+    mime_type : VARCHAR(100)
+    order : INT
+    is_downloadable : BOOLEAN
+    download_count : INT
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+}
+
+entity "content_tags" as CTag {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    name : VARCHAR(50)
+    unique(slug) : VARCHAR(50)
+    color : VARCHAR(7)
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "content_tag_pivot" as CTP {
+    primary_key(id) : ULID
+    --
+    foreign_key(content_id) : ULID
+    foreign_key(tag_id) : ULID
+}
+
+entity "classes" as Class {
+    primary_key(id) : ULID
+    --
+    foreign_key(discipline_id) : ULID
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    name : VARCHAR(100)
+    unique(code) : VARCHAR(20)
+    description : LONGTEXT
+    suggest_year : INT
+    is_public : BOOLEAN
+    status : ENUM('active', 'archived', 'inactive')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "user_classes" as UserClass {
+    primary_key(id) : ULID
+    --
+    foreign_key(user_id) : ULID
+    foreign_key(class_id) : ULID
+    --
+    role : ENUM('student', 'teacher')
+    enrolled_at : TIMESTAMP
+    status : ENUM('active', 'inactive', 'dropped')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+}
+
+entity "question_collections" as QC {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    title : VARCHAR(255)
+    description : TEXT
+    type : ENUM('exam', 'activity', 'practice', 'quiz', 'simulated')
+    is_public : BOOLEAN
+    duration_minutes : INT
+    total_points : DECIMAL(10,2)
+    status : ENUM('draft', 'published', 'archived', 'inactive', 'active')
+    --
+    <color:#FF6B6B><b>deleted_at : TIMESTAMP NULL</b></color>
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "question_collection_class_pivot" as QCCP {
+    primary_key(id) : ULID
+    --
+    foreign_key(collection_id) : ULID
+    foreign_key(class_id) : ULID
+    --
+    assigned_at : TIMESTAMP
+    due_date : TIMESTAMP
+    available_from : TIMESTAMP
+    available_until : TIMESTAMP
+    attempts_allowed : INT
+}
+
+entity "questions" as Question {
+    primary_key(id) : ULID
+    --
+    foreign_key(created_by) : ULID 
+    foreign_key(updated_by) : ULID 
+    --
+    statement : LONGTEXT
+    explanation : LONGTEXT
+    difficulty : INT
+    question_type : ENUM('multiple_choice', 'true_false', 'essay')
+    --
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "question_collection_pivot" as QCP {
+    primary_key(id) : ULID
+    --
+    foreign_key(collection_id) : ULID
+    foreign_key(question_id) : ULID
+    --
+    order : INT
+    points : DECIMAL(10,2)
+}
+
+entity "alternatives" as Alternative {
+    primary_key(id) : ULID
+    --
+    foreign_key(question_id) : ULID
+    --
+    text : LONGTEXT
+    is_correct : BOOLEAN
+    order : INT
+}
+
+entity "question_answers" as QAns {
+    primary_key(id) : ULID
+    --
+    foreign_key(user_id) : ULID
+    foreign_key(question_id) : ULID
+    foreign_key(alternative_id) : ULID
+    --
+    answer_text : LONGTEXT
+    is_correct : BOOLEAN
+    answered_at : TIMESTAMP
+    points_earned : DECIMAL(10,2)
+}
+
+' ============ RELACIONAMENTOS ============
+
+Discipline "1" -- "N" Skill
+Discipline "1" -- "N" Topic
+Discipline "1" -- "N" Class
+
+Skill "1" -- "N" ST
+Topic "1" -- "N" ST
+
+Topic "1" -- "N" Content
+CT "1" -- "N" Content
+Content "1" -- "N" CA
+Content "1" -- "N" CTP
+CTag "1" -- "N" CTP
+
+User "1" .. "N" Skill
+User "1" .. "N" Topic
+User "1" .. "N" Content
+User "1" .. "N" CA
+User "1" .. "N" Class
+User "1" .. "N" QC
+User "1" .. "N" Question
+User "N" .. "1" User : Creator/Editor
+
+User "1" -- "N" UserClass
+Class "1" -- "N" UserClass
+
+Class "1" -- "N" QCCP
+QC "1" -- "N" QCCP
+QC "1" -- "N" QCP
+Question "1" -- "N" QCP
+Question "1" -- "N" Alternative
+
+User "1" -- "N" QAns
+Question "1" -- "N" QAns
+
+note top of User
+    <b>SOFT DELETE APLICADO</b>
+    Todas as entidades principais usam soft delete.
+    Nenhum dado é fisicamente removido do banco.
+    
+    <b>Futuras melhorias:</b>
+    • Índices para otimização de queries
+    • FULLTEXT para busca textual avançada
+    • Índices compostos em deleted_at + status
+end note
+
+note top of Question
+    A dificuldade da questão é representada por um valor 
+    inteiro, onde: vai de 1 a 100 sendo 1 a mais fácil 
+    e 100 a mais difícil.
+end note
+
+@enduml
