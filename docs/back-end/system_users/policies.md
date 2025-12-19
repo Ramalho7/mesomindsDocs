@@ -31,7 +31,7 @@ Algumas regras de create/update, etc, não são feitas diretamente nas `policies
 As regras abaixo são válidas para todo o sistema:
 
 * Apenas admin pode criar usuários com role: `admin`, `moderator` ou `operator`;
-* Apenas admin pode realizar deleções (soft delete);
+* Apenas admin pode realizar deleções (soft delete) de outros usuários, mas o usuário pode deletar a si próprio;
 * Apenas admin e moderator podem alterar o status de conteúdos;
 
 ---
