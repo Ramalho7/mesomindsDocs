@@ -21,10 +21,10 @@ Esta documentação descreve como implementar a verificação de e-mail em uma a
 MAIL_MAILER=smtp
 MAIL_HOST=smtp
 MAIL_PORT=46522
-MAIL_USERNAME=contato@mesominds.com
+MAIL_USERNAME=123@example.com
 MAIL_PASSWORD=password
 MAIL_ENCRYPTION=ssl
-MAIL_FROM_ADDRESS=contato@mesominds.com
+MAIL_FROM_ADDRESS=123@example.com
 MAIL_FROM_NAME="Mesominds"
 
 FRONTEND_URL=http://localhost:3000

@@ -1,0 +1,16 @@
+@startuml
+actor Cliente as Frontend
+participant "Servidor\nAutenticação" as AuthServer
+participant "Rotas\nProtegidas" as ProtectedRoutes
+
+Frontend -> AuthServer: POST /login\n(credenciais)
+AuthServer --> Frontend: access_token\nrefresh_token
+
+Frontend -> ProtectedRoutes: Requisição\nAuthorization: Bearer {access_token}
+ProtectedRoutes --> Frontend: Resposta JSON
+
+note over Frontend: Token expira (15 dias)
+
+Frontend -> AuthServer: POST /refresh\n(refresh_token)
+AuthServer --> Frontend: novo access_token\nnovo refresh_token
+@enduml
