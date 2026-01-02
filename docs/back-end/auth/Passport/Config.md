@@ -17,7 +17,7 @@ public function register(): void
 }
 ```
 
-
+Devido a isso, a configuração pode ser um pouco diferente.
 
 ---
 
